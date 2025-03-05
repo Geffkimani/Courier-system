@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Tracking #</th>
+            <th>Status</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for parcel in parcels %}
+        <tr>
+            <td>{{ parcel.tracking_number }}</td>
+            <td>{{ parcel.status }}</td>
+            <td>{{ parcel.description }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No parcels found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

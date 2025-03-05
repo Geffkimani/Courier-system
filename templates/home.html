@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courier Management System - Home</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- You can include any fonts or additional meta tags here -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <h2>Courier Management</h2>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Log In</a>
+        </div>
+    </nav>
+
+    <!-- Home Content -->
+    <div class="home-container">
+        <header class="home-header">
+            <h1>Welcome to Courier Management System</h1>
+            <p>Your one-stop solution for reliable parcel delivery and tracking.</p>
+            <p>Sign up to send your parcels and track them with ease, or log in to manage your deliveries.</p>
+        </header>
+    </div>
+</body>
+</html>
