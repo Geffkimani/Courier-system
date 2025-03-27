@@ -1,4 +1,4 @@
-attrs==25.3.dev0
+attrs==25.3.0.dev0
 autocommand==2.2.2
 certifi==2025.1.31
 cffi==1.17.1
