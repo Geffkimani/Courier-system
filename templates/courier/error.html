@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen">
+    <div class="max-w-md bg-white p-6 rounded-lg shadow-lg text-center">
+        <h1 class="text-2xl font-bold text-red-600">Oops! Something went wrong.</h1>
+        <p class="mt-4 text-gray-700">We couldn't process your request. Please try again later.</p>
+        {% if error_message %}
+            <p class="mt-2 text-gray-500">Error: {{ error_message }}</p>
+        {% endif %}
+        <div class="mt-6">
+            <a href="{% url 'dashboard' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Return to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

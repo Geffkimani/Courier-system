@@ -1,0 +1,17 @@
+<h2>Parcels by Branch (Origin)</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Branch</th>
+      <th>Number of Parcels</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for branch in parcels_by_branch %}
+    <tr>
+      <td>{{ branch.branch_from__name }}</td>
+      <td>{{ branch.count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

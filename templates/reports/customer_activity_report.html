@@ -1,0 +1,17 @@
+<h2>Monthly Activity Report</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Month</th>
+      <th>Number of Parcels</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in monthly_report %}
+    <tr>
+      <td>{{ record.month|date:"F Y" }}</td>
+      <td>{{ record.count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

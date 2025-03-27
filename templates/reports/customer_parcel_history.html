@@ -1,0 +1,23 @@
+customer_parcel_history<h2>Your Parcel History</h2>
+<p>Total Parcels: {{ total_parcels }}</p>
+<p>Total Weight: {{ total_weight }} kg</p>
+<table>
+    <thead>
+        <tr>
+            <th>Tracking Number</th>
+            <th>Status</th>
+            <th>Weight (kg)</th>
+            <th>Sent Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for parcel in parcels %}
+        <tr>
+            <td>{{ parcel.tracking_number }}</td>
+            <td>{{ parcel.status }}</td>
+            <td>{{ parcel.weight }}</td>
+            <td>{{ parcel.sent_date|date:"M d, Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

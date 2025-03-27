@@ -1,0 +1,17 @@
+<h2>Top Customers</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Customer</th>
+      <th>Number of Parcels</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for customer in top_customers %}
+    <tr>
+      <td>{{ customer.sender__user__username }}</td>
+      <td>{{ customer.count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

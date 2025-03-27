@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg text-center">
+        <h1 class="text-3xl font-bold text-green-700 mb-4">Payment Status</h1>
+        <p class="mb-2">Parcel: {{ parcel.tracking_number }}</p>
+        <p class="mb-2">Payment Status: <span class="font-semibold">{{ parcel.payment_status }}</span></p>
+        {% if parcel.payment_date %}
+            <p class="mb-2">Payment Date: {{ parcel.payment_date|date:"M d, Y H:i" }}</p>
+        {% endif %}
+        <a href="{% url 'dashboard' %}" class="mt-4 inline-block px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+            Return to Dashboard
+        </a>
+    </div>
+</body>
+</html>

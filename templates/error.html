@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+       body {
+          font-family: "Poppins", sans-serif;
+          background: #f8d7da;
+          color: #721c24;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+       }
+       .error-container {
+          background: white;
+          padding: 20px 40px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          text-align: center;
+       }
+       h1 {
+          font-size: 24px;
+          margin-bottom: 10px;
+       }
+       p {
+          font-size: 18px;
+          margin-bottom: 20px;
+       }
+       a {
+          color: #2691d9;
+          text-decoration: none;
+          font-weight: 600;
+       }
+       a:hover {
+          text-decoration: underline;
+       }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+       <h1>Error</h1>
+       <p>{{ message }}</p>
+       <a href="{% url 'home' %}">Return to Home</a>
+    </div>
+</body>
+</html>

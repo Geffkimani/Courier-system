@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Staff Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+  <!-- Navigation Bar -->
+  <nav class="bg-gray-800 text-white p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div>
+        <h1 class="text-xl font-bold">Courier Management - Staff</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span>Welcome, {{ request.user.username }}</span>
+        <form method="POST" action="{% url 'staff_logout' %}" class="inline-block">
+          {% csrf_token %}
+          <button type="submit" class="px-3 py-1 bg-red-600 rounded text-white">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto p-6">
+    <!-- Dashboard Title -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-center text-gray-800">Staff Dashboard</h2>
+    </div>
+
+    <div class="flex justify-end mb-6">
+    <a href="{% url 'generate_report' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Download Report
+    </a>
+    </div>
+
+
+    <!-- Add Parcel Button -->
+    <div class="flex justify-end mb-6">
+      <a href="{% url 'staff_add_parcel' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        Add Parcel
+      </a>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Pending Parcels Card -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold mb-4">Pending Parcels</h3>
+        {% if pending_parcels %}
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead>
+            <tr class="bg-gray-50">
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Tracking No</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Sender</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Destination</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {% for parcel in pending_parcels %}
+            <tr>
+              <td class="px-3 py-2">{{ parcel.tracking_number }}</td>
+              <td class="px-3 py-2">{{ parcel.sender_name }}</td>
+              <td class="px-3 py-2">{{ parcel.branch_to.name }}</td>
+              <td class="px-3 py-2">
+                <a href="{% url 'update_parcel_status' parcel.id %}" class="text-blue-600 hover:underline">Update</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <p class="text-gray-500">No pending parcels.</p>
+        {% endif %}
+      </div>
+
+      <!-- In Transit Parcels Card -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold mb-4">Parcels In Transit</h3>
+        {% if in_transit_parcels %}
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead>
+            <tr class="bg-gray-50">
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Tracking No</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Sender</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Destination</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {% for parcel in in_transit_parcels %}
+            <tr>
+              <td class="px-3 py-2">{{ parcel.tracking_number }}</td>
+              <td class="px-3 py-2">{{ parcel.sender_name }}</td>
+              <td class="px-3 py-2">{{ parcel.branch_to.name }}</td>
+              <td class="px-3 py-2">
+                <a href="{% url 'update_parcel_status' parcel.id %}" class="text-blue-600 hover:underline">Update</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <p class="text-gray-500">No parcels in transit.</p>
+        {% endif %}
+      </div>
+
+      <!-- Delivered Parcels Card -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold mb-4">Delivered Parcels</h3>
+        {% if delivered_parcels %}
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead>
+            <tr class="bg-gray-50">
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Tracking No</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Sender</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Destination</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Delivered On</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {% for parcel in delivered_parcels %}
+            <tr>
+              <td class="px-3 py-2">{{ parcel.tracking_number }}</td>
+              <td class="px-3 py-2">{{ parcel.sender_name }}</td>
+              <td class="px-3 py-2">{{ parcel.branch_to.name }}</td>
+              <td class="px-3 py-2">{{ parcel.delivery_date|date:"M d, Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <p class="text-gray-500">No delivered parcels.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Reports Section -->
+    <div class="bg-white rounded-lg shadow p-6 mt-10">
+      <h3 class="text-xl font-semibold mb-4">Generated Reports</h3>
+      {% if available_reports %}
+      <ul class="list-disc pl-5">
+        {% for report in available_reports %}
+        <li>
+          <a href="{{ MEDIA_URL }}reports/{{ report }}" class="text-blue-600 hover:underline" target="_blank">
+            {{ report }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        <p class="text-gray-500">No reports available.</p>
+      {% endif %}
+    </div>
+
+  </main>
+</body>
+</html>

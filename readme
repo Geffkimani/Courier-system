@@ -1,0 +1,116 @@
+# Courier Management System
+
+
+Visit http://127.0.0.1:8000/ in your browser to access the system.
+
+URL Endpoints
+Customer Side
+Customer Login: http://127.0.0.1:8000/login/
+
+Customer Dashboard: http://127.0.0.1:8000/dashboard/
+
+Send Parcel (Customer): http://127.0.0.1:8000/add_parcel/
+
+Account Settings: http://127.0.0.1:8000/account_settings/
+
+Track Parcel (from Dashboard): Clicking the "Track" button on a parcel will display a map.
+
+Staff Side
+Staff Login: http://127.0.0.1:8000/staff/login/
+
+Staff Dashboard: http://127.0.0.1:8000/staff/dashboard/
+
+Add Parcel (Staff): http://127.0.0.1:8000/staff/add_parcel/
+
+Update Parcel Status: http://127.0.0.1:8000/staff/update_parcel_status/<parcel_id>/
+
+Operational Report: http://127.0.0.1:8000/staff/operational_report/
+
+Payment & Reports
+Payment Processing (via PayPal, Mpesa, etc.): http://127.0.0.1:8000/payments/process/<parcel_id>/
+
+Payment Success: http://127.0.0.1:8000/payments/success/<parcel_id>/
+
+Payment Cancel: http://127.0.0.1:8000/payments/cancel/<parcel_id>/
+
+Customer Report: http://127.0.0.1:8000/reports/customer-report/
+
+Other Reports: See the reports section in the admin or specific URLs defined in the reports app.
+
+Generating and Accessing Reports
+In the Reports App:
+Customer Reports: Customers can download a report (e.g., CSV) of their parcel history.
+
+Staff/Payment Reports: Staff and admin users can access various reports, such as pending deliveries or payment summaries, from the reports section.
+
+Example for a Payment Report:
+Visit: http://127.0.0.1:8000/reports/payment-report/
+
+This URL will generate a report (e.g., CSV) that can be viewed in the browser or downloaded.
+
+Alternatively, admins can generate reports via the Django admin by using custom actions or custom views registered under the admin interface.
+
+
+This is a Django-based courier management system that supports features such as:
+- **User registration and login** for customers, staff, and admins.
+- **Parcel creation and tracking** using live maps (Leaflet.js with OpenStreetMap).
+- **Payment integration** with PayPal, Mpesa, and other payment methods.
+- **Report generation** for staff and admin users.
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Application](#running-the-application)
+- [URL Endpoints](#url-endpoints)
+- [Generating and Accessing Reports](#generating-and-accessing-reports)
+- [License](#license)
+
+## Features
+
+- **User Management:** Customers, Staff, and Admins with custom roles.
+- **Parcel Management:** Create, update, delete, and track parcels.
+- **Live Tracking:** Real-time parcel tracking using OpenStreetMap and Leaflet.js.
+- **Payment Integration:** Supports PayPal (and can be extended to Mpesa, AirtelMoney, etc.).
+- **Reporting:** Generate and download various reports (e.g., payment reports, parcel reports).
+
+## Installation
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/courier-management-system.git
+cd courier-management-system
+
+
+ # For Unix/MacOS
+python3 -m venv env
+source env/bin/activate
+
+# For Windows
+python -m venv env
+env\Scripts\activate
+
+pip install django
+pip install django-paypal
+pip install channels  # If using Django Channels for WebSockets
+pip install django-environ  # Optional: for environment variable management
+
+python manage.py makemigrations
+python manage.py migrate
+
+
+python manage.py createsuperuser
+
+DEBUG=True
+SECRET_KEY=your-secret-key
+PAYPAL_RECEIVER_EMAIL=your-sandbox-business-email@example.com
+PAYPAL_CLIENT_ID=your-paypal-client-id
+PAYPAL_TEST=True
+
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+python manage.py runserver

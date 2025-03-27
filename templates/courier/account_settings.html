@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: "Poppins", sans-serif; background: #f4f4f4; padding: 20px; }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+    form { display: flex; flex-direction: column; gap: 15px; }
+    label { font-weight: 600; }
+    input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+    button {
+      background: #2c3e50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { background: #1a242f; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Account Settings</h1>
+    <form method="POST" action="{% url 'account_settings' %}">
+      {% csrf_token %}
+      <label for="address">Address</label>
+      <input type="text" name="address" id="address" value="{{ customer_profile.address }}" placeholder="Enter your address">
+      <label for="phone">Phone Number</label>
+      <input type="text" name="phone" id="phone" value="{{ customer_profile.phone }}" placeholder="Enter your phone number">
+      <button type="submit">Update Profile</button>
+    </form>
+    <br>
+    <a href="{% url 'dashboard' %}">Return to Dashboard</a>
+  </div>
+</body>
+</html>

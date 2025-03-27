@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parcel Confirmation</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Confirm Your Parcel Details</h1>
+
+    <div class="space-y-3 text-gray-700">
+      <p><span class="font-semibold">Sender:</span> {{ parcel.sender }}</p>
+      <p><span class="font-semibold">Branch From:</span> {{ parcel.branch_from }}</p>
+      <p><span class="font-semibold">Branch To:</span> {{ parcel.branch_to }}</p>
+      <p><span class="font-semibold">Tracking Number:</span> {{ parcel.tracking_number }}</p>
+      <p><span class="font-semibold">Description:</span> {{ parcel.description }}</p>
+      <p><span class="font-semibold">Weight:</span> {{ parcel.weight }}</p>
+      <p><span class="font-semibold">Dimensions:</span> {{ parcel.dimensions }}</p>
+      <p><span class="font-semibold">Status:</span> {{ parcel.status }}</p>
+    </div>
+
+    <div class="flex justify-between mt-8">
+      <!-- Button to allow editing the parcel details -->
+      <a href="{% url 'add_parcel' %}" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition duration-200">
+            Make Changes
+      </a>
+      <!-- Form for proceeding to payment -->
+      <form action="{% url 'payments:proceed_to_payment' parcel.id %}" method="GET">
+        <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200">
+          Proceed to Payment
+        </button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

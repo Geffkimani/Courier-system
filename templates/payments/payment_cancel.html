@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Cancelled</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-red-50 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-6 rounded shadow text-center">
+    <h1 class="text-3xl font-bold text-red-700">Payment Cancelled</h1>
+    <p class="mt-4">Your payment for Parcel {{ parcel.tracking_number }} was cancelled.</p>
+    <a href="/dashboard/" class="mt-6 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Return to Dashboard</a>
+  </div>
+</body>
+</html>

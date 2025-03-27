@@ -1,27 +1,148 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Customer Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <!-- Leaflet CSS and JS for maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    /* Hide the map container by default */
+    #map-container {
+      display: none;
+      margin-top: 20px;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <nav class="bg-blue-900 text-white p-4 fixed top-0 w-full z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="#" class="text-xl font-bold">Parcel Delivery System</a>
+      <div class="flex items-center space-x-4">
+        <span class="hidden md:block">Welcome, {{ request.user.username }}</span>
+        <form method="POST" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="px-4 py-2 bg-red-600 rounded hover:bg-red-700">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>
 
-{% block content %}
-<h2>Dashboard</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Tracking #</th>
-            <th>Status</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for parcel in parcels %}
-        <tr>
-            <td>{{ parcel.tracking_number }}</td>
-            <td>{{ parcel.status }}</td>
-            <td>{{ parcel.description }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="3">No parcels found.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto mt-24 p-6">
+    <!-- Action Buttons -->
+    <div class="flex justify-end mb-6">
+      <a href="{% url 'customer_report' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Download My Parcel Report
+      </a>
+    </div>
+    <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 mb-8">
+      <button onclick="location.href='{% url 'add_parcel' %}'" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">
+        Send Parcel
+      </button>
+      <button onclick="location.href='{% url 'account_settings' %}'" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded">
+        Account Settings
+      </button>
+    </div>
+
+    <!-- Dashboard Card: Customer Parcels -->
+    <div class="bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Your Parcels</h2>
+      {% if parcels %}
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-left font-medium text-gray-700 uppercase tracking-wider">Tracking No</th>
+              <th class="px-6 py-3 text-left font-medium text-gray-700 uppercase tracking-wider">Branch From</th>
+              <th class="px-6 py-3 text-left font-medium text-gray-700 uppercase tracking-wider">Destination</th>
+              <th class="px-6 py-3 text-left font-medium text-gray-700 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left font-medium text-gray-700 uppercase tracking-wider">Sent Date</th>
+              <th class="px-6 py-3 text-left font-medium text-gray-700 uppercase tracking-wider">Track</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {% for parcel in parcels %}
+            <tr>
+              <td class="px-6 py-4">{{ parcel.tracking_number }}</td>
+              <td class="px-6 py-4">{{ parcel.branch_from.name }}</td>
+              <td class="px-6 py-4">{{ parcel.branch_to.name }}</td>
+              <td class="px-6 py-4">{{ parcel.status }}</td>
+              <td class="px-6 py-4">{{ parcel.sent_date|date:"M d, Y H:i" }}</td>
+              <td class="px-6 py-4">
+                <!-- When clicked, calls trackParcel() and passes the parcel's coordinates -->
+                <button type="button" onclick="trackParcel({{ parcel.current_latitude|default:'null' }}, {{ parcel.current_longitude|default:'null' }})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
+                    Track
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-center text-gray-500">You have no parcels.</p>
+      {% endif %}
+    </div>
+
+    <!-- Hidden Map Container for Tracking -->
+    <div id="map-container" class="bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Parcel Tracking</h2>
+      <div id="map"></div>
+      <div class="mt-4 text-center">
+        <button onclick="hideMap()" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+          Close Map
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+      // Initialize the map when the page loads.
+      let map, marker;
+      function initMap() {
+          map = L.map('map').setView([0, 0], 2);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; OpenStreetMap contributors'
+          }).addTo(map);
+      }
+
+      // Call initMap on window load.
+      window.onload = initMap;
+
+      // Function to display the map with the parcel's location.
+      function trackParcel(lat, lng) {
+          // Check if valid coordinates are provided
+          if (lat != null && lng != null) {
+              // Show the map container
+              document.getElementById('map-container').style.display = 'block';
+
+              // If a marker exists, update its position; otherwise, create a new marker.
+              if (marker) {
+                  marker.setLatLng([lat, lng]);
+              } else {
+                  marker = L.marker([lat, lng]).addTo(map);
+              }
+              // Center the map on the new marker
+              map.setView([lat, lng], 10);
+              marker.bindPopup("Parcel Location").openPopup();
+          } else {
+              alert("Location not available for this parcel.");
+          }
+      }
+
+      // Function to hide the map container.
+      function hideMap() {
+          document.getElementById('map-container').style.display = 'none';
+      }
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<h2>Pending Deliveries</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Tracking Number</th>
+      <th>Destination</th>
+      <th>Sent Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for parcel in pending_parcels %}
+    <tr>
+      <td>{{ parcel.tracking_number }}</td>
+      <td>{{ parcel.branch_to.name }}</td>
+      <td>{{ parcel.sent_date|date:"M d, Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

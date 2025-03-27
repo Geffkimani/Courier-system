@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Staff</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
+        <h1 class="text-2xl font-bold mb-4 text-center">Register Staff Account</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Register</button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="{% url 'staff_dashboard' %}" class="text-blue-600 hover:underline">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

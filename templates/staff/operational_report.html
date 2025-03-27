@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Operational Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-3xl mx-auto p-8">
+    <h1 class="text-3xl font-bold mb-6 text-center">Operational Report</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-xl font-semibold">Total Parcels</h2>
+        <p class="text-3xl">{{ total_parcels }}</p>
+      </div>
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-xl font-semibold">Pending Parcels</h2>
+        <p class="text-3xl">{{ pending }}</p>
+      </div>
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-xl font-semibold">In Transit</h2>
+        <p class="text-3xl">{{ in_transit }}</p>
+      </div>
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-xl font-semibold">Delivered Parcels</h2>
+        <p class="text-3xl">{{ delivered }}</p>
+      </div>
+    </div>
+    <div class="mt-8 text-center">
+      <a href="{% url 'staff_dashboard' %}" class="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Back to Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

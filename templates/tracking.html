@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Parcel Tracking</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2m6jU/Up7g1Kz7LeuA1xtpoK0g8gPHODTyPnjNQ2F1f5WlRbG5xV7rR1KzlH3NfXlJX3h3Hg=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-nmmMYI+gFN5Jz8g9Z9H4/8mI2jwOhGn4blC95WlX1u2D5LJvvHvlJw+3smS4SW/wK7qYPQ5uw3m+/v+RN8m2YQ=="
+  crossorigin=""></script>
+
+</head>
+<body>
+  <h1>Live Parcel Tracking</h1>
+  <div id="map" style="width: 100%; height: 500px;"></div>
+  <script>
+  // Initialize the map, centered at a default location (for example, Nairobi)
+  var map = L.map('map').setView([-1.286389, 36.817223], 13);
+
+  // Use OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Create a marker without specifying a position initially
+  var marker = L.marker([-1.286389, 36.817223]).addTo(map);
+
+  // Example function to update marker position based on new data
+  function updateParcelLocation(lat, lng) {
+    var newLatLng = new L.LatLng(lat, lng);
+    marker.setLatLng(newLatLng);
+    map.setView(newLatLng);
+  }
+
+  // Example: simulate receiving a new location update (replace with your real data logic)
+  setTimeout(function() {
+    updateParcelLocation(-1.292066, 36.821946);
+  }, 5000);
+</script>
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+<h2>Delayed Deliveries</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Tracking Number</th>
+      <th>Expected Delivery Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for parcel in delayed_deliveries %}
+    <tr>
+      <td>{{ parcel.tracking_number }}</td>
+      <td>{{ parcel.expected_delivery_date|date:"M d, Y" }}</td>
+      <td>{{ parcel.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
